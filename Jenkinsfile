@@ -18,7 +18,6 @@ pipeline {
                     sh "mvn --version"
                     app_version = sh script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true
                     echo '============================'
-                    echo "Branche :" + env.BRANCH_NAME
                     echo "Version : ${app_version}"
                     echo "============================"
 				}
@@ -42,10 +41,10 @@ pipeline {
             }
         }
 
-//          stage('CleanWorkspace') {
-//             steps {
-//                 cleanWs()
-//             }
-//          }
+         stage('CleanWorkspace') {
+            steps {
+              //  cleanWs()
+            }
+         }
     }
 }
