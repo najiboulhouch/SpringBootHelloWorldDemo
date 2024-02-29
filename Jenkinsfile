@@ -18,6 +18,7 @@ pipeline {
                     sh "mvn --version"
                     app_version = sh script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true
                     echo '============================'
+                    echo "Branche :" + env.BRANCH_NAME
                     echo "Version : ${app_version}"
                     echo "============================"
 				}
@@ -28,9 +29,8 @@ pipeline {
             	script {
 	                echo 'Building..'
 	                sh "mvn -Dmaven.test.failure.ignore=true -Dmaven.test.skip=true clean package"
-	                app_version = "1.0.${currentBuild.number}-SNAPSHOT"
 	                echo "Build number is ${currentBuild.number}"
-	                sh "mvn release:update-versions -DdevelopmentVersion=${app_version}"
+	                sh "mvn release:update-versions -DdevelopmentVersion=1.2.0-SNAPSHOT"
 	             }
             }
         }
@@ -42,7 +42,7 @@ pipeline {
 
          stage('CleanWorkspace') {
             steps {
-              //  cleanWs()
+                cleanWs()
             }
          }
     }
