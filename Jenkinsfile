@@ -41,6 +41,7 @@ pipeline {
                 ]) {
                     sh 'git config --global user.email "najib.oulhouch@gmail.com"'
                     sh 'git config --global user.name "najiboulhouch"'
+                    sh 'git checkout -b main'
                     sh 'git add pom.xml'
                     sh 'git commit -m "push to git"'
                     sh "git push origin refs/heads/main:main"
