@@ -37,7 +37,6 @@ pipeline {
         stage('git push') {
             steps {
             withCredentials([usernameColonPassword(credentialsId: 'najibcompte', variable: 'USERPASS')]) {
-                        sh 'git checkout main'
                         sh 'git add pom.xml'
                         sh "git diff-index --quiet HEAD || git commit -m 'Update pom.xml'"
                         sh "git push https://$USERPASS@github.com/najiboulhouch/SpringBootHelloWorldDemo.git"
