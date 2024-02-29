@@ -1,3 +1,5 @@
+def app_version = ''
+
 pipeline {
     agent any
 
@@ -14,6 +16,11 @@ pipeline {
             	script {
 				    echo 'Prepare'
                     sh "mvn --version"
+                    app_version = sh script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true
+                    echo '============================'
+                    echo "Branche :" + env.BRANCH_NAME
+                    echo "Version : ${app_version}"
+                    echo "============================"
 				}
             }
         }
@@ -21,8 +28,10 @@ pipeline {
             steps {
             	script {
 	                echo 'Building..'
+	                sh "mvn -Dmaven.test.failure.ignore=true -Dmaven.test.skip=true clean package"
+	                echo "Build number is ${currentBuild.number}"
+	                sh "mvn release:update-versions -DdevelopmentVersion=1.2.0-SNAPSHOT"
 	             }
-
             }
         }
         stage('Quality') {
