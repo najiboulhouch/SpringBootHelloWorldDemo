@@ -31,12 +31,16 @@ pipeline {
                      app_version = "1.0.${currentBuild.number}-SNAPSHOT"
                      echo "Build number is ${currentBuild.number}"
                      sh "mvn release:update-versions -DdevelopmentVersion=${app_version}"
-                    withCredentials([gitUsernamePassword(credentialsId: 'najibcompte',
-                                    gitToolName: 'git-tool')]) {
-                             sh 'git commit -am "change pom version"'
-                             sh "git push origin main"
                    }
-	             }
+	             }          
+        }
+        stage('git push') {
+            steps {
+                withCredentials([
+                    gitUsernamePassword(credentialsId: 'najibcompte', gitToolName: 'Default')
+                ]) {
+                    sh "git push"
+                }
             }
         }
         stage('Quality') {
@@ -44,11 +48,11 @@ pipeline {
                 echo 'Sonar Quality..'
             }
         }
+}
 
 //          stage('CleanWorkspace') {
 //             steps {
 //               //  cleanWs()
 //             }
-//          }
-    }
+//          }    
 }
