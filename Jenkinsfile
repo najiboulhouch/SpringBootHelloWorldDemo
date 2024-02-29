@@ -36,16 +36,11 @@ pipeline {
         }
         stage('git push') {
             steps {
-                withCredentials([
-                    gitUsernamePassword(credentialsId: 'najibcompte', gitToolName: 'Default')
-                ]) {
-                    sh 'git config --global user.email "najib.oulhouch@gmail.com"'
-                    sh 'git config --global user.name "najiboulhouch"'
-                    sh 'git checkout -b main'
-                    sh 'git add pom.xml'
-                    sh 'git commit -m "push to git"'
-                    sh "git push origin refs/heads/main:main"
-                }
+            withCredentials([usernameColonPassword(credentialsId: 'najibcompte', variable: 'USERPASS')]) {
+                        sh 'git add pom.xml'
+                        sh "git diff-index --quiet HEAD || git commit -m 'Update pom.xml'"
+                        sh "git push https://$USERPASS@github.com/najiboulhouch/SpringBootHelloWorldDemo.git"
+                      }
             }
         }
         stage('Quality') {
