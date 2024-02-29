@@ -31,8 +31,11 @@ pipeline {
                      app_version = "1.0.${currentBuild.number}-SNAPSHOT"
                      echo "Build number is ${currentBuild.number}"
                      sh "mvn release:update-versions -DdevelopmentVersion=${app_version}"
-                     sh 'git commit -am "change pom version"'
-                     sh "git push origin main"
+                    withCredentials([gitUsernamePassword(credentialsId: 'najibcompte',
+                                    gitToolName: 'git-tool')]) {
+                             sh 'git commit -am "change pom version"'
+                             sh "git push origin main"
+                   }
 	             }
             }
         }
