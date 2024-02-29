@@ -39,7 +39,7 @@ pipeline {
             withCredentials([usernameColonPassword(credentialsId: 'git-account', variable: 'USERPASS')]) {
                         sh 'git add pom.xml'
                         sh "git diff-index --quiet HEAD || git commit -m 'Update pom.xml'"
-                        sh "git push https://$USERPASS@github.com/najiboulhouch/SpringBootHelloWorldDemo.git"
+                        sh 'git push https://$USERPASS@github.com/najiboulhouch/SpringBootHelloWorldDemo.git'
                       }
             }
         }
